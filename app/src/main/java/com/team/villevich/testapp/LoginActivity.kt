@@ -23,6 +23,8 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import com.crashlytics.android.Crashlytics
+import com.google.firebase.crash.FirebaseCrash
 
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -36,8 +38,15 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     private var mAuthTask: UserLoginTask? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Crashlytics.log("TEST CRASH")
+        Crashlytics.log("TEST CRASH")
+        Crashlytics.log("TEST CRASH")
         super.onCreate(savedInstanceState)
+        FirebaseCrash.log("Here comes some exceptions!")
+        FirebaseCrash.report(Exception("oops!"))
+
         setContentView(R.layout.activity_login)
+
         // Set up the login form.
      //   populateAutoComplete()
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
@@ -49,7 +58,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         })
 
         email_sign_in_button.setOnClickListener { attemptLogin() }
+        crashBtn.setOnClickListener(View.OnClickListener {
+            Crashlytics.log("TEST CRASH")
+                Crashlytics.getInstance().crash()}
+        )
     }
+
 
  /*   private fun populateAutoComplete() {
         if (!mayRequestContacts()) {
